@@ -2,6 +2,8 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 
+const TOKEN = process.env.JWT_SECRET || "udaykumar";
+
 const auth = async (req, res, next) => {
   try {
     const token = req.header("Authorization")?.replace("Bearer ", "");
@@ -10,7 +12,7 @@ const auth = async (req, res, next) => {
       return res.status(401).json({ message: "Authentication required" });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, TOKEN);
     const user = await User.findById(decoded.userId);
 
     if (!user) {

@@ -4,6 +4,8 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const auth = require("../middleware/auth");
 
+const TOKEN = process.env.JWT_SECRET || "udaykumar";
+
 // Register user
 router.post("/register", async (req, res) => {
   try {
@@ -28,7 +30,7 @@ router.post("/register", async (req, res) => {
     await user.save();
 
     // Generate JWT token
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ userId: user._id }, TOKEN, {
       expiresIn: "7d",
     });
 
@@ -58,7 +60,7 @@ router.post("/login", async (req, res) => {
     }
 
     // Generate JWT token
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ userId: user._id }, TOKEN, {
       expiresIn: "7d",
     });
 
